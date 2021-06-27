@@ -62,7 +62,7 @@
 			<div class="outer">
 				<md-field>
 					<label>PW</label>
-                     <<md-input type="password" v-model="pw" />
+                     <md-input type="password" v-model="pw" />
 				</md-field>
 				<md-button @click="onLogin">로그인</md-button>
 			</div>
@@ -86,7 +86,15 @@
 
                         <md-field>
                             <label for="email">이메일</label>
-                            <md-input v-model="newData.email" @keydown.enter="submit" required />
+                            <md-input v-model="newData.email" required />
+                        </md-field>
+                        <md-field>
+                            <label for="email">연령대</label>
+                            <md-input v-model="newData.email" required />
+                        </md-field>
+                        <md-field>
+                            <label for="password">패스원</label>
+                            <md-input type="password" v-model="newData.password" @keydown.enter="submit" required />
                         </md-field>
                     </md-dialog-content>
 
@@ -167,32 +175,40 @@
 					)
             		.catch(error => console.log(error));
     			},            	
-    			onLogin(){
-       				axios.get('/api/v1/users?page=0&size=3')
-   					.then(res => {
-   						console.log(res.data);
-   						this.listData.length = 0;
-   						for (const item of res.data)
-   						{ 
-   							console.log(item)
-   		                    this.listData.push(item);
-   						}
-   	                    this.addDialog = true;
-   	                    this.addDialog = false;
-   						}
-   					)
-               		.catch(error => console.log(error));
+    			onLogin() {
+    				const frm = new FormData();
+    				frm.append('username', this.id);
+    				frm.append('password', this.pw);
+    				
+    				axios.post('/login',frm)
+					.then(res => {
+						window.location = "/userlist.html";
+						}
+					)
+            		.catch(error => {
+						alert("ID/PW를 확인하세요.");
+            		});
     			},
                 submit() {
-                    const submitData = {
-                        id: this.newData.id,
-                        username: this.newData.username,
-                        email: this.newData.email
-                    }
-                    console.log(submitData);
+    				const frm = new FormData();
+    				frm.append('username', this.newData.username);
+    				frm.append('password', this.newData.password);
+    				frm.append('email', this.newData.email);
         
-                    this.closeDialog();
-                    this.clearData();
+    				axios.post('/join',frm)
+					.then(res => {
+						alert("가입되었습니다.");
+	                    this.closeDialog();
+	                    this.clearData();
+						}
+					)
+            		.catch(error => {
+						alert("ID/PW를 확인하세요.");
+	                    this.closeDialog();
+	                    this.clearData();
+            		});
+    				
+    				
                 },
 
                 onAdd() {
@@ -204,7 +220,11 @@
                     this.addDialog = false;
                     this.removeDialog = false;
                 },
-
+                clearData(key) {
+                    for (let key in this.newData) {
+                        this.newData[key] = '';
+                    }
+                },
 
             }
         })

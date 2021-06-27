@@ -64,7 +64,7 @@
                         <md-input v-model="search" />
                     </md-field>
                     <div>
-						<button v-on:click="getData(0)"> 조회 </button>
+						<button v-on:click="getData()"> 조회 </button>
 					</div>
                 </div>
 
@@ -78,7 +78,7 @@
 
                         <div class="md-layout listInner" v-for="(listItem, index) in displayData" 
                            :key="index">
-                            <div class="md-layout-item md-size-30 text-info"> {{ listItem.nickname }} </div>
+                            <div class="md-layout-item md-size-30 text-info"> {{ listItem.username }} </div>
                             <div class="md-layout-item md-size-50 text-info"> {{ listItem.email }} </div>
 
                             <div class="md-layout-item md-size-10 text-info">
@@ -94,10 +94,6 @@
                     <i class="fas fa-plus-circle addBtn" @click="onAdd"></i>
                 </div>
             </div>
-            <div class="md-layout">
-            <button  v-on:click="getPrevData()"><</button> {{ pageNumber }} <button  v-on:click="getNextData()">></button>
-            </div>
-            
 <!--
             <div>
                 <md-dialog :md-active.sync="addDialog" @keydown.esc="closeDialog">
@@ -127,12 +123,12 @@
                     <md-dialog-content>
                         <md-field>
                             <label for="subject">닉네임</label>
-                            <md-input v-model="selectedData.nickname" required />
+                            <md-input v-model="selectedData.username" required />
                         </md-field>
 
                         <md-field>
                             <label for="description">이메일</label>
-                            <md-input v-model="selectedData.email" readonly />
+                            <md-input v-model="selectedData.email" readonly="true" />
                         </md-field>
                     </md-dialog-content>
 
@@ -166,7 +162,7 @@
         //api 통신 대체용 test data
         const testData = [{
             "id": 41,
-            "nickname": "Finland",
+            "username": "Finland",
             "email": "Calera de Tango"
         }]
 
@@ -182,15 +178,15 @@
                 curSelecdtIndex: 0, //선택한 index
                 first: false,
                 second: false,
-				pageNumber : 0,
+				
                 newData: {
                     id: Number,
-                    nickname: '',
+                    username: '',
                     email: ''
                 },
                 selectedData: {
                     id: Number,
-                    nickname: '',
+                    username: '',
                     email: ''
                 }
 
@@ -221,13 +217,12 @@
             },
 
             methods: {
-    			getData(pageNo){
-    				this.pageNumber = pageNo;
-    				axios.get('/api/v1/users?page='+this.pageNumber+'&size=3')
+    			getData(){
+    				axios.get('/api/v1/users?page=0&size=3')
 					.then(res => {
-						console.log(res.data.content);
+						console.log(res.data);
 						this.listData.length = 0;
-						for (const item of res.data.content)
+						for (const item of res.data)
 						{ 
 							console.log(item)
 		                    this.listData.push(item);
@@ -237,87 +232,39 @@
 						}
 					)
             		.catch(error => {
-						console.log(error);
             				alert("조회에 실해하였습니다.");
 					});
-    			},      
-    			getPrevData(){
-    				this.getData(this.pageNumber - 1 );
-    				/*
-    				axios.get('/api/v1/users?page'+this.pageNumber+'0&size=3')
-					.then(res => {
-						console.log(res.data.content);
-						this.listData.length = 0;
-						for (const item of res.data.content)
-						{ 
-							console.log(item)
-		                    this.listData.push(item);
-						}
-	                    this.addDialog = true;
-	                    this.addDialog = false;
-						}
-					)
-            		.catch(error => {
-						console.log(error);
-            				alert("조회에 실해하였습니다.");
-					});
-    				*/
-    			},     		
-    			getNextData(){
-    				this.getData(this.pageNumber + 1 );
-/*
-    				this.pageNumber = this.pageNumber + 1;
-    				axios.get('/api/v1/users?page='+this.pageNumber+'&size=3')
-					.then(res => {
-						console.log(res.data.content);
-						this.listData.length = 0;
-						for (const item of res.data.content)
-						{ 
-							console.log(item)
-		                    this.listData.push(item);
-						}
-	                    this.addDialog = true;
-	                    this.addDialog = false;
-						}
-					)
-            		.catch(error => {
-						console.log(error);
-            				alert("조회에 실해하였습니다.");
-					});
-    				*/
-    			},        			
+    			},            	
+                submit() {
+                    const submitData = {
+                        id: this.newData.id,
+                        username: this.newData.username,
+                        email: this.newData.email
+                    }
+
+                    console.log(submitData);
+                    this.listData.push(submitData);
+                    this.closeDialog();
+                    this.clearData();
+                },
+                
+
                 editedSubmit(index) {
                     const editedData = {
                         id: this.selectedData.id,
-                        nickname: this.selectedData.nickname,
-                        email: this.selectedData.email,
+                        username: this.selectedData.username,
                     }
-                    console.log(editedData);
-    				axios.post('/user/'+this.selectedData.id,editedData)
-					.then(res => {
-						console.log(res);
-	                    this.listData.splice(this.curSelecdtIndex, 1, editedData);
-	                    this.closeDialog();
-						}
-					)
-            		.catch(error => {
-						alert("변경에 실패하였습니다.");
-            		});
+
+                    //this.listData.push(editedData); 가 아님
+                    //해당 위치에 데이터 추가: splice(해당 index, 갯수, 추가할 데이터)
+                    this.listData.splice(this.curSelecdtIndex, 1, editedData);
+                    this.closeDialog();
                 },
 
                 removeData() {
                     //데이터 삭제: splice(해당 index, 갯수)
-    				axios.delete('/user/'+this.selectedData.id)
-					.then(res => {
-						console.log(res);
-	                    this.listData.splice(this.curSelecdtIndex, 1);
-	                    this.removeDialog = false;
-	                    this.closeDialog();
-						}
-					).catch(error => {
-						alert("삭제에 실패하였습니다.");
-            		});
-					
+                    this.listData.splice(this.curSelecdtIndex, 1);
+                    this.removeDialog = false;
                 },
 
                 onAdd() {
@@ -329,7 +276,7 @@
 
                     this.curSelecdtIndex = index;
                     this.selectedData.id = this.listData[this.curSelecdtIndex].id;
-                    this.selectedData.nickname = this.listData[this.curSelecdtIndex].nickname;
+                    this.selectedData.username = this.listData[this.curSelecdtIndex].username;
                     this.selectedData.email = this.listData[this.curSelecdtIndex].email;
                 },
 
@@ -338,10 +285,6 @@
                     //현재 index번호를 보내주어야, removeDialog창에서 confirm 클릭후
                     //해당 list를 지울수 있음
                     this.curSelecdtIndex = index;
-                    this.selectedData.id = this.listData[this.curSelecdtIndex].id;
-                    this.selectedData.nickname = this.listData[this.curSelecdtIndex].nickname;
-                    this.selectedData.email = this.listData[this.curSelecdtIndex].email;
-                    
                 },
 
                 closeDialog() {

@@ -1,10 +1,29 @@
 package com.kakaoenterprise.web.dto;
 
-import lombok.Data;
+import com.kakaoenterprise.domain.user.User;
 
-@Data
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public class UserDto {
-	private Integer id; // 시퀀스, auto_increment
-	private String username;
-	private String email;
+	private Long id;
+    private String nickname;;
+    private String email;
+
+    @Builder
+    public UserDto(Long id, String nickname, String email) {
+        this.id = id;
+        this.nickname = nickname;
+        this.email = email;
+    }
+
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.nickname = user.getNickname();
+        this.email = user.getEmail();
+    }
 }
+

@@ -13,6 +13,8 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.kakaoenterprise.web.dto.UserDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +28,7 @@ import lombok.NoArgsConstructor;
 public class User {
 	@Id //Primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id; // 시퀀스, auto_increment
+	private Long id; // 시퀀스, auto_increment
 	 
 	@Column(nullable = false, length = 100, unique = true) 
 	private String username;
@@ -36,11 +38,29 @@ public class User {
 	
 	@Column(nullable = false, length = 50) 
 	private String email;
-	
+
+	@Column(nullable = false, length = 100) 
+	private String nickname;
+
+	@Column(nullable = true, length = 100) 
+	private Long snsid; // 
+
+	@Column(nullable = true, length = 100) 
+	private String sysid; // 
+
 	@Enumerated(EnumType.STRING)
 	private RoleType role; // ADMIN, USER
 	
 	@CreationTimestamp
 	private Timestamp createDate;
 
+    public UserDto convertToAccountResDto(){
+        return UserDto.builder()
+                .nickname(this.nickname)
+                .email(this.email)
+                .id(this.id)
+                .build();
+    }
+    
+    
 }
