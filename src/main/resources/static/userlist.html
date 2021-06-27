@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!--vue  -->
+    <script src="/js/vue25.js" ></script>
+    <!--엑시오스 CDN -->
+    <script src="/js/axios.min.js"></script>
+    <title>Http 통신, 뷰 리소스</title>
+  </head>
+  <body>
+    <div id="app1">
+        <button v-on:click="getData()"> 호출 </button>
+
+ 		<div class="option_check">
+			<label data-tiara-layer="age"><input type="checkbox" v-model="age_check" name="age" value="0"><span class="txt_opt">전체</span></label> 
+			<label data-tiara-layer="age"><input type="checkbox" v-model="age_check" name="age" value="10"><span class="txt_opt">10대</span></label> 
+			<label data-tiara-layer="age"><input type="checkbox" v-model="age_check" name="age" value="20"><span class="txt_opt">20대</span></label> 
+			<label data-tiara-layer="age"><input type="checkbox" v-model="age_check" name="age" value="30"><span class="txt_opt">30대</span></label> 
+			<label data-tiara-layer="age"><input type="checkbox" v-model="age_check" name="age" value="40"><span class="txt_opt">40대</span></label> 
+			<label data-tiara-layer="age"><input type="checkbox" v-model="age_check" name="age" value="50"><span class="txt_opt">50대</span></label> 
+			<label data-tiara-layer="age"><input type="checkbox" v-model="age_check" name="age" value="60"><span class="txt_opt">60대이상</span></label> 
+		</div>
+    </div>		
+    <script>
+      new Vue({
+		el: '#app1',
+		methods:{
+			getData: function(){
+				axios.get('/api/v1/users?page=1&size=1')
+				.then(function(response){
+					console.log(response);
+					console.log(response.data); // 객체 형태로 반환. 파싱작업 불필요
+					});
+			}
+		}
+      });
+    </script>
+ 
+  </body>
+</html>
+ 

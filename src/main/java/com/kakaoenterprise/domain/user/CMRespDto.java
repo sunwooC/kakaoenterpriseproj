@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.kakaoenterprise.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

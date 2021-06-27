@@ -1,6 +1,214 @@
-<html>
-<a href="https://kauth.kakao.com/oauth/authorize?client_id=baea2cf9d9e01dd7788f24fb1626cf3d&redirect_uri=http://localhost:8080/login/oauth2/code/kakao&response_type=code">aaaa</a>
-<br/>
-<a href="/logout">logout</a>
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/material/vue-material.min.css">
+    <link rel="stylesheet" href="/css/material/default.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <script src="/js/vue25.js"></script>
+    <script src="/js/materia/vue-material.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    
+    <title>board</title>
+    <style>
+        .addBtn {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            font-size: 30px;
+            padding: 10px;
+            color: #f5b914;
+        }
+
+        i {
+            cursor: pointer;
+        }
+
+        .listTitle {
+            margin-bottom: 10px;
+            background-color: #f5b914;
+            font-weight: bold;
+            padding: 5px 0;
+        }
+
+        .listInner {
+            margin-bottom: 10px;
+            background-color: #dedede;
+            padding: 5px 0;
+        }
+        .outer {
+			display: flex;
+			align-items: baseline;
+		}
+		.full {
+  			flex: 1;
+		}
+    </style>
+</head>
+
+<body>
+    <div id="app">
+ 		<div style="max-width: 800px; margin: 10px;">
+		
+			<div class="md-layout-item md-size-100">
+				<md-field>
+					<label>ID</label>
+					<md-input v-model="id" />
+				</md-field>
+			</div>
+			<div class="outer">
+				<md-field>
+					<label>PW</label>
+                     <<md-input type="password" v-model="pw" />
+				</md-field>
+				<md-button @click="onLogin">로그인</md-button>
+			</div>
+			<div class="md-layout">
+				<div class="md-layout-item md-size-100">
+	 				<div>
+						<md-button @click="onAdd">카카오로 로그인</md-button>
+						<md-button @click="onAdd">신규가입</md-button>
+					</div>
+				</div>
+           </div>
+            <div>
+                <md-dialog :md-active.sync="addDialog" @keydown.esc="closeDialog">
+                    <md-dialog-title>Add</md-dialog-title>
+
+                    <md-dialog-content>
+                        <md-field>
+                            <label for="username">닉네임</label>
+                            <md-input v-model="newData.username" required />
+                        </md-field>
+
+                        <md-field>
+                            <label for="email">이메일</label>
+                            <md-input v-model="newData.email" @keydown.enter="submit" required />
+                        </md-field>
+                    </md-dialog-content>
+
+                    <md-dialog-actions>
+                        <md-button class="md-primary" @click="closeDialog">Close</md-button>
+                        <md-button class="md-primary" @click="submit">Save</md-button>
+                    </md-dialog-actions>
+                </md-dialog>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <script>
+        Vue.use(VueMaterial.default);
+        //api 통신 대체용 test data
+        const testData = [{
+            "id": 41,
+            "username": "Finland",
+            "email": "Calera de Tango"
+        }]
+
+        new Vue({
+            el: '#app',
+            data: {
+                addDialog: false,
+                editDialog: false,
+                removeDialog: false,
+                listData: [],
+                age_check: [],
+                search: '',
+                id: '',
+                pw: '',
+                curSelecdtIndex: 0, //선택한 index
+                first: false,
+                second: false,
+				
+                newData: {
+                    id: Number,
+                    username: '',
+                    email: ''
+                },
+                selectedData: {
+                    id: Number,
+                    username: '',
+                    email: ''
+                }
+
+            },
+            created() {
+                this.listData = testData;
+            },
+
+            computed: {
+                //여기서 오타등의 에러가 났을 경우, toLowerCase function이 없다는 에러메시지 나옴
+                displayData() {
+                	return this.listData;
+                }
+            },
+
+            methods: {
+    			getData(){
+    				axios.get('/api/v1/users?page=0&size=3')
+					.then(res => {
+						console.log(res.data);
+						this.listData.length = 0;
+						for (const item of res.data)
+						{ 
+							console.log(item)
+		                    this.listData.push(item);
+						}
+	                    this.addDialog = true;
+	                    this.addDialog = false;
+						}
+					)
+            		.catch(error => console.log(error));
+    			},            	
+    			onLogin(){
+       				axios.get('/api/v1/users?page=0&size=3')
+   					.then(res => {
+   						console.log(res.data);
+   						this.listData.length = 0;
+   						for (const item of res.data)
+   						{ 
+   							console.log(item)
+   		                    this.listData.push(item);
+   						}
+   	                    this.addDialog = true;
+   	                    this.addDialog = false;
+   						}
+   					)
+               		.catch(error => console.log(error));
+    			},
+                submit() {
+                    const submitData = {
+                        id: this.newData.id,
+                        username: this.newData.username,
+                        email: this.newData.email
+                    }
+                    console.log(submitData);
+        
+                    this.closeDialog();
+                    this.clearData();
+                },
+
+                onAdd() {
+                    this.addDialog = true;
+                },
+
+
+                closeDialog() {
+                    this.addDialog = false;
+                    this.removeDialog = false;
+                },
+
+
+            }
+        })
+    </script>
+</body>
 
 </html>
