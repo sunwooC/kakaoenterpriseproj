@@ -51,6 +51,9 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private RoleType role; // ADMIN, USER
 	
+	@Column(nullable = true, length = 6) 
+	private String argrange; // 
+
 	@CreationTimestamp
 	private Timestamp createDate;
 
@@ -59,6 +62,7 @@ public class User {
                 .nickname(this.nickname)
                 .email(this.email)
                 .id(this.id)
+                .argrange(this.argrange)
                 .build();
     }
     

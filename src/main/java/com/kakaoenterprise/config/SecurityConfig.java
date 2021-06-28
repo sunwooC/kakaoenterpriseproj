@@ -24,21 +24,24 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.kakaoenterprise.config.auth.RestLoginFailureHandler;
 import com.kakaoenterprise.config.auth.RestLoginSuccessHandler;
+import com.kakaoenterprise.config.oauth.OAuth2DetailsService;
 
 //import com.kakaoenterprise.config.auth.RestLoginSuccessHandler;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
 
+@Slf4j
 @RequiredArgsConstructor
 @EnableWebSecurity
-@Configuration // IoC 등록
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-	//private final OAuth2DetailsService oAuth2DetailsService;
+	private final OAuth2DetailsService oAuth2DetailsService;
 	
-	// IoC등록만 하면 AuthenticationManager가 Bcrypt로 자동 검증해줌.
 	@Bean
 	public BCryptPasswordEncoder encode() {
 		return new BCryptPasswordEncoder();
@@ -49,26 +52,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private RestLoginFailureHandler restLoginFailureHandler;
 
+    
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests()
-			.antMatchers("/user/**", "/post/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')") // ROLE_ 는 강제성이 있음. 롤검증시
+			.antMatchers("/", "/css/**", "/js/**","/login/**").permitAll()
+			.antMatchers("/user/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.anyRequest().authenticated()
+			.and().exceptionHandling().accessDeniedPage("/login.html");
+		http.formLogin()
+			.loginPage("/login.html")
+			.loginProcessingUrl("/login").permitAll();
+		
+			//.successHandler(restLoginSuccessHandler) 
+			//.failureHandler(restLoginFailureHandler)
+		http.oauth2Login()
+		.userInfoEndpoint()
+		.userService(oAuth2DetailsService);
+		
+		/*
 			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().permitAll()
 			.and()
 				.formLogin()
 				.loginPage("/index.html")
 				.loginProcessingUrl("/login")
-				.successHandler(restLoginSuccessHandler) 
-				.failureHandler(restLoginFailureHandler)
 				.permitAll()
-			.and()
-				.oauth2Login()
-				.userInfoEndpoint();
-			//.userService(oAuth2DetailsService);
-			
+			*/
 	}
+	/*
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
     @Qualifier("oauth2RestTemplate")
@@ -92,5 +105,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         });
         return restTemplate;
     }
+    */
 	
 }

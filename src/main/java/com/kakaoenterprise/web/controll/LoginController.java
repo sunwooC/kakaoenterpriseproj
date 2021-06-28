@@ -31,7 +31,7 @@ public class LoginController {
 	private String userMeUri ="https://kapi.kakao.com/v2/user/me";
 	private String userLogoutUri ="https://kapi.kakao.com/v1/user/logout";
 	private String userUnlinkUri ="https://kapi.kakao.com/v1/user/unlink";
-	
+	/*
 	@GetMapping("/login/oauth2/code/kakao")
 	public String callback(String code,String error) {
 		HashMap map = new HashMap();
@@ -63,4 +63,5 @@ public class LoginController {
 		System.out.println(response.getBody());
 		//logout(token.getAccess_token());
 	}
+	*/
 }

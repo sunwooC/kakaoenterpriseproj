@@ -37,7 +37,7 @@ public class UserController {
 	private final UserService userService;
 	private final AuthService authService;
 	
-	@PostMapping("/join")
+	@PostMapping("/login/join")
 	public ResponseEntity join(AuthJoinReqDto authJoinReqDto) {
 		authService.join(authJoinReqDto.toEntity());
 		return new ResponseEntity<>(1,HttpStatus.OK);
