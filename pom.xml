@@ -83,6 +83,7 @@
 	</dependencies>
 
 	<build>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -96,8 +97,33 @@
 					</excludes>
 				</configuration>
 			</plugin>
-		</plugins>
-		<defaultGoal>install</defaultGoal>
+			
+        <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>2.6</version>
+            <executions>
+                <execution>
+                    <id>copy-resources</id>
+                    <phase>process-classes</phase>
+                    <goals>
+                        <goal>copy-resources</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>${basedir}/target/classes/application.yml</outputDirectory>
+                        <resources>
+                            <resource>
+                                <directory>${basedir}/</directory>
+                                <includes>
+                                    <include>./application.yml</include>
+                                </includes>
+                            </resource>
+                        </resources>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>			
+			
+		</plugins>		
 	</build>
 
 </project>

@@ -7,11 +7,13 @@ server:
       enabled: true
     
 spring:
+  profiles:
+    active: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/work?serverTimezone=Asia/Seoul
-    username: work
-    password: password
+    url: jdbc:mysql://localhost:3306/pos?serverTimezone=Asia/Seoul
+    username: pos
+    password: pos1234
     
   jpa:
     open-in-view: true
