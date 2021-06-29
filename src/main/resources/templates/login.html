@@ -84,9 +84,20 @@ i {
 							<md-field> 
 								<label for="email">이메일</label> <md-input v-model="newData.email" required />
 							</md-field>
-							<md-field> 
-								<label for="email">연령대</label> <md-input v-model="newData.email" required /> 
-							</md-field> 
+					
+							<md-field>
+								<label for="argrange">연령대</label>
+								<md-select v-model="newData.argrange" name="age" id="age">
+									<md-option value="0">9세 이하</md-option>
+									<md-option value="10">10대</md-option>
+									<md-option value="20">20대</md-option>
+									<md-option value="30">30대</md-option>
+									<md-option value="40">40대</md-option>
+									<md-option value="50">50대</md-option>
+									<md-option value="60">60대이상</md-option>
+								</md-select>
+					        </md-field>
+				
 							<md-field> 
 								<label for="password">패스원</label> <md-input type="password" v-model="newData.password" @keydown.enter="submit" required /> 
 							</md-field> 
@@ -126,7 +137,8 @@ i {
                     id: Number,
                     username: '',
                     nickname: '',
-                    email: ''
+                    email: '',
+                    argrange: '',
                 },
             },
             created() {
@@ -145,7 +157,7 @@ i {
     				axios.post('/login',frm)
 					.then(res => {
 						console.log(res);
-						window.location = "/user/userlist.html";
+						window.location = "/user/userlist";
 						}
 					)
             		.catch(error => {
@@ -161,7 +173,7 @@ i {
     				frm.append('nickname', this.newData.nickname);
     				frm.append('password', this.newData.password);
     				frm.append('email', this.newData.email);
-        
+    				frm.append('argrange', this.newData.argrange);
     				axios.post('/login/join',frm)
 					.then(res => {
 						alert("가입되었습니다.");
@@ -174,15 +186,10 @@ i {
 	                    this.closeDialog();
 	                    this.clearData();
             		});
-    				
-    				
                 },
-
                 onAdd() {
                     this.addDialog = true;
                 },
-
-
                 closeDialog() {
                     this.addDialog = false;
                     this.removeDialog = false;

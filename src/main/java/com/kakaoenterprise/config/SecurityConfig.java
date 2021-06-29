@@ -13,6 +13,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,6 +39,7 @@ import org.springframework.security.core.Authentication;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	private final OAuth2DetailsService oAuth2DetailsService;
@@ -52,17 +54,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private RestLoginFailureHandler restLoginFailureHandler;
 
-    
+	@Override
+	public void configure(WebSecurity web) throws Exception{
+		web.ignoring().antMatchers("/css/**", "/js/**");
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests()
-			.antMatchers("/", "/css/**", "/js/**","/login/**").permitAll()
 			.antMatchers("/user/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/**").permitAll()
 			.anyRequest().authenticated()
-			.and().exceptionHandling().accessDeniedPage("/login.html");
+			.and().exceptionHandling().accessDeniedPage("/");
 		http.formLogin()
-			.loginPage("/login.html")
+			.loginPage("/")
 			.loginProcessingUrl("/login").permitAll();
 		
 			//.successHandler(restLoginSuccessHandler) 
