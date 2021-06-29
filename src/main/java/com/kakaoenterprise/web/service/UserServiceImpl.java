@@ -14,26 +14,23 @@ import com.kakaoenterprise.web.dto.UserDto;
 import com.kakaoenterprise.web.dto.UserUpdateReqDto;
 import com.kakaoenterprise.web.repository.UserRepository;
 
-
 @Service
 @Transactional
-public class UserServiceImpl implements UserService{
-    @Autowired
-    private UserRepository userRepository;
-    
+public class UserServiceImpl implements UserService {
+	@Autowired
+	private UserRepository userRepository;
+
 	/*
-	@Override
-	public User findByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-*/
+	 * @Override public User findByUsername(String username) { // TODO
+	 * Auto-generated method stub return null; }
+	 */
 
 	@Override
 	public Page<UserDto> findAll(Pageable pageable) {
 		Page<User> users = userRepository.findAll(pageable);
 		return users.map(UserDto::new);
 	}
+
 	@Override
 	public User findById(Long id) {
 		Optional<User> user = userRepository.findById(id);
@@ -42,10 +39,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void update(UserUpdateReqDto account) {
-		userRepository.update(account.getNickname(),account.getId());
+		userRepository.update(account.getNickname(), account.getId());
 	}
 
-	
 	@Override
 	public void deleteBySnsid(Long id) {
 		userRepository.deleteBySnsid(id);
@@ -56,5 +52,4 @@ public class UserServiceImpl implements UserService{
 		userRepository.deleteById(id);
 	}
 
-	
 }

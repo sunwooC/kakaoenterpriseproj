@@ -15,24 +15,16 @@ import springfox.documentation.builders.PathSelectors;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    private ApiInfo apiInfo() {
+	private ApiInfo apiInfo() {
 
-        return new ApiInfoBuilder()
-                .title("Demo")
-                .description("API EXAMPLE")
-                .build();
-    }
+		return new ApiInfoBuilder().title("Demo").description("API EXAMPLE").build();
+	}
 
-    @Bean
-    public Docket commonApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("example")
-                .apiInfo(this.apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors
-                        .basePackage("com.example.demo.controller"))
-                .paths(PathSelectors.ant("/api/**"))
-                .build();
-    }
+	@Bean
+	public Docket commonApi() {
+		return new Docket(DocumentationType.SWAGGER_2).groupName("example").apiInfo(this.apiInfo()).select()
+				.apis(RequestHandlerSelectors.basePackage("com.example.demo.controller"))
+				.paths(PathSelectors.ant("/api/**")).build();
+	}
 
 }

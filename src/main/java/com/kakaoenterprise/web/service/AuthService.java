@@ -16,7 +16,7 @@ public class AuthService {
 
 	private final UserRepository userRepository;
 	private final BCryptPasswordEncoder bBCryptPasswordEncoder;
-	
+
 	@Transactional
 	public void join(User user) {
 		String rawPassword = user.getPassword();
@@ -25,5 +25,5 @@ public class AuthService {
 		user.setRole(RoleType.USER);
 		userRepository.save(user);
 	}
-	
+
 }

@@ -6,6 +6,11 @@ server:
       charset: utf-8
       enabled: true
     
+kakao: 
+  userMeUri: https://kapi.kakao.com/v2/user/me
+  userLogoutUri: https://kapi.kakao.com/v1/user/logout
+  userUnlinkUri: https://kapi.kakao.com/v1/user/unlink
+      
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -22,6 +27,10 @@ spring:
     show-sql: true
     properties:
       hibernate.format_sql: true
+      
+  redis:
+    host: localhost
+    port: 6379
 
   jackson:
     serialization:

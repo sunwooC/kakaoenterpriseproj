@@ -12,24 +12,23 @@ import com.kakaoenterprise.domain.user.User;
 
 import lombok.Data;
 
-
 @Data
-public class PrincipalDetails implements UserDetails, OAuth2User{
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
 	private User user;
 	private Map<String, Object> attributes; // OAuth 제공자로 부터 받은 회원 정보
 	private boolean oauth = false;
-	
+
 	public PrincipalDetails(User user) {
 		this.user = user;
 	}
-	
+
 	public PrincipalDetails(User user, Map<String, Object> attributes) {
 		this.user = user;
 		this.attributes = attributes;
 		this.oauth = true;
 	}
-	
+
 	@Override
 	public Map<String, Object> getAttributes() {
 		return attributes;
@@ -52,7 +51,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User{
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true ;
+		return true;
 	}
 
 	@Override
@@ -69,15 +68,13 @@ public class PrincipalDetails implements UserDetails, OAuth2User{
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		System.out.println("롤 검증 하는 중");
 		Collection<GrantedAuthority> collectors = new ArrayList<>();
-		collectors.add(()-> "ROLE_"+user.getRole().toString());
+		collectors.add(() -> "ROLE_" + user.getRole().toString());
 		return collectors;
 	}
-
-	
 
 }

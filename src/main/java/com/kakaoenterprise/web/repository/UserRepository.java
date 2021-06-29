@@ -10,17 +10,16 @@ import org.springframework.data.repository.query.Param;
 import com.kakaoenterprise.domain.user.User;
 import com.kakaoenterprise.web.dto.UserDto;
 
-public interface UserRepository extends JpaRepository<User, Long>{
-	
+public interface UserRepository extends JpaRepository<User, Long> {
+
 	User findByUsername(String username);
-	@Query(value="UPDATE User u SET u.nickname = :nickname WHERE u.id = :id", nativeQuery=false)
+
+	@Query(value = "UPDATE User u SET u.nickname = :nickname WHERE u.id = :id", nativeQuery = false)
 	@Modifying
-	Integer update(String nickname,Long id);
-	
+	Integer update(String nickname, Long id);
+
 	@Modifying
 	@Query("delete from User b where b.snsid=:snsid")
 	void deleteBySnsid(@Param("snsid") Long snsid);
-	
-	
-	
+
 }
