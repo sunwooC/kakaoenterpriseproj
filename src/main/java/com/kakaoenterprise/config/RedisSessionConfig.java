@@ -6,10 +6,12 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @Configuration
-@EnableRedisHttpSession
-public class RedisHttpSessionConfig {
+@EnableRedisHttpSession 
+public class RedisSessionConfig {
 	@Bean
 	public LettuceConnectionFactory connectionFactory() {
-		return new LettuceConnectionFactory();
-	}
+		return new LettuceConnectionFactory(); 
+	}	
 }
+
+

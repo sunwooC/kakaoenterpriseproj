@@ -1,4 +1,4 @@
-package com.kakaoenterprise.web.service;
+package com.kakaoenterprise.web.service.Impl;
 
 import java.util.Optional;
 
@@ -13,6 +13,7 @@ import com.kakaoenterprise.domain.user.User;
 import com.kakaoenterprise.web.dto.UserDto;
 import com.kakaoenterprise.web.dto.UserUpdateReqDto;
 import com.kakaoenterprise.web.repository.UserRepository;
+import com.kakaoenterprise.web.service.UserService;
 
 @Service
 @Transactional

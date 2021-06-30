@@ -66,23 +66,16 @@
 			<version>2.9.2</version>
 		</dependency>
 
-
-
+		<!-- redis session  -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+	
 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-data-redis</artifactId>
 		</dependency>
-
-
-
 		<!-- security -->
 		<dependency>
 			<groupId>org.springframework.security.oauth</groupId>

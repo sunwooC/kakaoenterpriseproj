@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
+import com.kakaoenterprise.config.oauth.MyDefaultAuthorizationCodeTokenResponseClient;
 import com.kakaoenterprise.config.oauth.OAuth2DetailsService;
 
 //import com.kakaoenterprise.config.auth.RestLoginSuccessHandler;
@@ -45,26 +46,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/user/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-				.antMatchers("/**").permitAll().antMatchers("/login/**").permitAll().anyRequest().authenticated().and()
-				.exceptionHandling().accessDeniedPage("/");
-		http.formLogin().loginPage("/").loginProcessingUrl("/login").permitAll();
-		// .successHandler(restLoginSuccessHandler)
-		// .failureHandler(restLoginFailureHandler)
-		http.oauth2Login().disable();
-		/*
-		 * /* .tokenEndpoint(token -> token
-		 * .accessTokenResponseClient(this.accessTokenResponseClient()) )
-		 */
-		/*
-		 * .userInfoEndpoint() .userService(oAuth2DetailsService);
-		 * 
-		 * .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-		 * .anyRequest().permitAll() .and() .formLogin() .loginPage("/index.html")
-		 * .loginProcessingUrl("/login") .permitAll()
-		 */
 
+		http.authorizeRequests()
+			.antMatchers("/", "/css/**", "/js/**","/login/**").permitAll()
+			.antMatchers("/user/**")
+			.access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.anyRequest().authenticated();
+			//.and().exceptionHandling().accessDeniedPage("/login");
+		http.formLogin()
+			.loginPage("/");
+			//.loginProcessingUrl("/login").permitAll();
+		//http.oauth2Login().disable();
+		
+		http.oauth2Login().defaultSuccessUrl("/user/userlist")
+			.userInfoEndpoint().userService(oAuth2DetailsService);
+		http.oauth2Login().tokenEndpoint().accessTokenResponseClient(new MyDefaultAuthorizationCodeTokenResponseClient()); 
 	}
 
 }

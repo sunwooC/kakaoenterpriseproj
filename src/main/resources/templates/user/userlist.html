@@ -2,115 +2,129 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/css/material/vue-material.min.css">
-    <link rel="stylesheet" href="/css/material/default.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
-    <script src="/js/vue25.js"></script>
-    <script src="/js/materia/vue-material.min.js"></script>
-    <script src="/js/axios.min.js"></script>
-    
-    <title>board</title>
-    <style>
-        .addBtn {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            font-size: 30px;
-            padding: 10px;
-            color: #f5b914;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="/css/material/vue-material.min.css">
+<link rel="stylesheet" href="/css/material/default.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+<script src="/js/vue25.js"></script>
+<script src="/js/materia/vue-material.min.js"></script>
+<script src="/js/axios.min.js"></script>
 
-        i {
-            cursor: pointer;
-        }
+<title>board</title>
+<style>
+.addBtn {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	font-size: 30px;
+	padding: 10px;
+	color: #f5b914;
+}
 
-        .listTitle {
-            margin-bottom: 10px;
-            background-color: #f5b914;
-            font-weight: bold;
-            padding: 5px 0;
-        }
+i {
+	cursor: pointer;
+}
 
-        .listInner {
-            margin-bottom: 10px;
-            background-color: #dedede;
-            padding: 5px 0;
-        }
-    </style>
+.listTitle {
+	margin-bottom: 10px;
+	background-color: #f5b914;
+	font-weight: bold;
+	padding: 5px 0;
+}
+
+.listInner {
+	margin-bottom: 10px;
+	background-color: #dedede;
+	padding: 5px 0;
+}
+</style>
 </head>
 
 <body>
-    <div id="app">
-        <div style="max-width: 800px; margin: 10px;">
-        
-        
+	<div id="app">
+		<div style="max-width: 800px; margin: 10px;">
 
-                <div class="md-layout-item md-size-100">
 
-			    <md-field>
-			        <label for="movies">Movies</label>
-			        <md-select v-model="selectedMovies" name="movies" id="movies" multiple>
-			          <md-option value="-1">전체</md-option>
-			          <md-option value="10">10대</md-option>
-			          <md-option value="20">20대</md-option>
-			          <md-option value="30">30대</md-option>
-			          <md-option value="40">40대</md-option>
-			          <md-option value="50">50대</md-option>
-			          <md-option value="60">60대이상</md-option>
-			        </md-select>
-			      </md-field>
-			           <div>
-			        <strong>Selected movies:</strong>
-			        {{ selectedMovies }}
-			      </div>
 
-                    <md-field>
-                        <label for="search">이메일도메인</label>
-                        <md-input v-model="search" />
-                    </md-field>
-                    <div>
-						<button v-on:click="getData(0)"> 조회 </button>
-						<button v-on:click="logOut()"> 로그아웃 </button>
+			<div class="md-layout-item md-size-100">
+
+				<md-field> <label for="movies">Movies</label> <md-select
+					v-model="selectedMovies" name="movies" id="movies" multiple>
+				<md-option value="-1">전체</md-option> <md-option value="10">10대</md-option>
+				<md-option value="20">20대</md-option> <md-option value="30">30대</md-option>
+				<md-option value="40">40대</md-option> <md-option value="50">50대</md-option>
+				<md-option value="60">60대이상</md-option> </md-select> </md-field>
+				<div>
+					<strong>Selected movies:</strong> {{ selectedMovies }}
+				</div>
+
+				<md-field> <label for="search">이메일도메인</label> <md-input
+					v-model="search" /> </md-field>
+				<div>
+					<button v-on:click="getData(0)">조회</button>
+					<button v-on:click="logOut()">로그아웃</button>
+				</div>
+			</div>
+
+			<div class="md-layout">
+				<div class="md-layout-item md-size-100">
+
+					<div class="md-layout listTitle">
+						<div class="md-layout-item md-size-30 text-info">닉네임</div>
+						<div class="md-layout-item md-size-30 text-info">이메일</div>
+						<div class="md-layout-item md-size-20 text-info">가입시스템</div>
+						<div class="md-layout-item md-size-10 text-info">카카사용자 정보 조회</div>
+						<div class="md-layout-item md-size-10 text-info">수정(닉네임)</div>
+						<div class="md-layout-item md-size-10 text-info">토큰갱신</div>
+						<div class="md-layout-item md-size-10 text-info">연결끊기</div>
+						<div class="md-layout-item md-size-10 text-info">삭제</div>
 					</div>
-                </div>
 
-                <div class="md-layout">
-                    <div class="md-layout-item md-size-100">
+					<div class="md-layout listInner"
+						v-for="(listItem, index) in displayData" :key="index">
+						<div class="md-layout-item md-size-30 text-info">{{
+							listItem.nickname }}</div>
+						<div class="md-layout-item md-size-30 text-info">{{
+							listItem.email }}</div>
+						<div class="md-layout-item md-size-20 text-info">{{
+							listItem.sysid }}</div>
 
-                        <div class="md-layout listTitle">
-                            <div class="md-layout-item md-size-30 text-info">닉네임</div>
-                            <div class="md-layout-item md-size-50 text-info">이메일</div>
-                        </div>
+						<div class="md-layout-item md-size-10 text-info">
+							<i class="fas fa-edit" @click="onEdit(index)"></i>
+						</div>
 
-                        <div class="md-layout listInner" v-for="(listItem, index) in displayData" 
-                           :key="index">
-                            <div class="md-layout-item md-size-30 text-info"> {{ listItem.nickname }} </div>
-                            <div class="md-layout-item md-size-50 text-info"> {{ listItem.email }} </div>
+						<div class="md-layout-item md-size-10 text-info">
+							<i class="fas fa-edit" @click="onEdit(index)"></i>
+						</div>
+						<div class="md-layout-item md-size-10 text-info">
+							<i class="fal fa-sync" @click="onReaccessToekn(index)"></i> <!-- 토큰갱신 -->
+						</div>
+						<div class="md-layout-item md-size-10 text-info">
+							<i class="fas fa-trash-alt" @click="onRemove(index)"></i>
+						</div>
+						<div class="md-layout-item md-size-10 text-info">
+							<i class="fas fa-trash-alt" @click="onRemove(index)"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div>
+				<i class="fas fa-plus-circle addBtn" @click="onAdd"></i>
+			</div>
+		</div>
 
-                            <div class="md-layout-item md-size-10 text-info">
-                                <i class="fas fa-edit" @click="onEdit(index)"></i>
-                            </div>
-                            <div class="md-layout-item md-size-10 text-info">
-                                <i class="fas fa-trash-alt" @click="onRemove(index)"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <i class="fas fa-plus-circle addBtn" @click="onAdd"></i>
-                </div>
-            </div>
-            
-            
-            
-            <div class="md-layout">
-            <button  v-on:click="getPrevData()"><</button> {{ pageNumber }} <button  v-on:click="getNextData()">></button>
-            </div>
-            
-<!--
+
+
+		<div class="md-layout">
+			<button v-on:click="getPrevData()"><</button>
+			{{ pageNumber }}
+			<button v-on:click="getNextData()">></button>
+		</div>
+
+		<!--
             <div>
                 <md-dialog :md-active.sync="addDialog" @keydown.esc="closeDialog">
                     <md-dialog-title>Add</md-dialog-title>
@@ -133,53 +147,33 @@
                     </md-dialog-actions>
                 </md-dialog>
 -->
-                <md-dialog :md-active.sync="editDialog" @keydown.esc="closeDialog">
-                    <md-dialog-title>Edit</md-dialog-title>
+		<md-dialog :md-active.sync="editDialog" @keydown.esc="closeDialog">
+		<md-dialog-title>Edit</md-dialog-title> <md-dialog-content>
+		<md-field> <label for="subject">닉네임</label> <md-input
+			v-model="selectedData.nickname" required /> </md-field> <md-field> <label
+			for="description">이메일</label> <md-input v-model="selectedData.email"
+			readonly /> </md-field> </md-dialog-content> <md-dialog-actions> <md-button
+			class="md-primary" @click="closeDialog">Close</md-button> <md-button
+			class="md-primary" @click="editedSubmit">Save</md-button> </md-dialog-actions> </md-dialog>
 
-                    <md-dialog-content>
-                        <md-field>
-                            <label for="subject">닉네임</label>
-                            <md-input v-model="selectedData.nickname" required />
-                        </md-field>
+		<md-dialog :md-active.sync="removeDialog" @keydown.esc="closeDialog"
+			@keydown.enter="removeData"> <md-dialog-title>Remove</md-dialog-title>
 
-                        <md-field>
-                            <label for="description">이메일</label>
-                            <md-input v-model="selectedData.email" readonly />
-                        </md-field>
-                    </md-dialog-content>
+		<md-dialog-content> 정말 삭제 하시겠습니까? </md-dialog-content> <md-dialog-actions>
+		<md-button class="md-primary" @click="closeDialog">Cancel</md-button>
+		<md-button class="md-primary" @click="removeData">Confirm</md-button>
+		</md-dialog-actions> </md-dialog>
+	</div>
 
-                    <md-dialog-actions>
-                        <md-button class="md-primary" @click="closeDialog">Close</md-button>
-                        <md-button class="md-primary" @click="editedSubmit">Save</md-button>
-                    </md-dialog-actions>
-                </md-dialog>
-
-                <md-dialog :md-active.sync="removeDialog" @keydown.esc="closeDialog" 
-                   @keydown.enter="removeData">
-                    <md-dialog-title>Remove</md-dialog-title>
-
-                    <md-dialog-content>
-                        정말 삭제 하시겠습니까?
-                    </md-dialog-content>
-
-                    <md-dialog-actions>
-                        <md-button class="md-primary" @click="closeDialog">Cancel</md-button>
-                        <md-button class="md-primary" @click="removeData">Confirm</md-button>
-                    </md-dialog-actions>
-                </md-dialog>
-            </div>
-
-        </div>
-    </div>
+	</div>
+	</div>
 
 
-    <script>
+	<script>
         Vue.use(VueMaterial.default);
         //api 통신 대체용 test data
         const testData = [{
-            "id": 41,
-            "nickname": "Finland",
-            "email": "Calera de Tango"
+
         }]
 
         new Vue({
@@ -204,7 +198,8 @@
                 selectedData: {
                     id: Number,
                     nickname: '',
-                    email: ''
+                    email: '',
+                    sysid: ''
                 }
 
             },
@@ -278,7 +273,27 @@
 						alert("변경에 실패하였습니다.");
             		});
                 },
-
+                onReaccessToekn(index){
+                	if( this.selectedData.sysid !== 'kakao'){
+                		alert("kakao가이자만 가능합니다.");
+                		return ;
+                	}
+                    const getdData = {
+                            id: this.selectedData.id,
+                        }
+                        console.log(getdData);
+        				axios.post('/api/v1/access-toekns/'+this.selectedData.id,getdData)
+    					.then(res => {
+    						console.log(res);
+    	                    this.listData.splice(this.curSelecdtIndex, 1, editedData);
+    	                    this.closeDialog();
+    						}
+    					)
+                		.catch(error => {
+    						alert("변경에 실패하였습니다.");
+                		});                	
+                	
+                },
                 removeData() {
                     //데이터 삭제: splice(해당 index, 갯수)
     				axios.delete('/user/'+this.selectedData.id)

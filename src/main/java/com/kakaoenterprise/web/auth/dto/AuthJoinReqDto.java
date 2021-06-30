@@ -1,6 +1,7 @@
 package com.kakaoenterprise.web.auth.dto;
 
 import com.kakaoenterprise.domain.user.User;
+
 import lombok.Data;
 
 // Valid 나중에 처리하자.
@@ -13,6 +14,10 @@ public class AuthJoinReqDto {
 	private String email;
 
 	public User toEntity() {
-		return User.builder().username(username).nickname(nickname).password(password).email(email).build();
+		return User.builder()
+				.username(username)
+				.nickname(nickname)
+				.password(password)
+				.email(email).build();
 	}
 }

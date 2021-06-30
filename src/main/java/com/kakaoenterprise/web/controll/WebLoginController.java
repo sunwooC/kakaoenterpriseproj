@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WebLoginController {
 	@RequestMapping("/")
 	public String login(HttpSession session) {
-		System.out.println(session.getId()) ;
+		if(session != null) {
+			
+			return "/user/userlist";
+		}
+		
 		return "login";
 	}
 

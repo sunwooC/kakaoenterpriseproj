@@ -17,7 +17,7 @@ import com.kakaoenterprise.KakaoAuthToken;
 
 @Controller
 public class KakaoLoginOutController {
-
+	/*
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
 	private String clientId;
 
@@ -101,5 +101,6 @@ public class KakaoLoginOutController {
 		HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(params, headers);
 		ResponseEntity<KakaoAuthToken> response = rt.exchange(tokenUri, HttpMethod.POST, req, KakaoAuthToken.class);
 	}
+	*/
 
 }

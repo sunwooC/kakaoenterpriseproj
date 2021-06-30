@@ -10,16 +10,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDto {
 	private Long id;
-	private String nickname;;
+	private String nickname;
 	private String email;
-	private String argrange;;
-
+	private String argrange;
+	private String snsid;
+	private String sysid;
+	private Integer agegrop;
+	private String refreshToken;
+	private String accessToekn;
+	
 	@Builder
-	public UserDto(Long id, String nickname, String email, String argrange) {
+	public UserDto(Long id, String nickname, String email, String argrange, String snsid, String sysid, Integer agegrop,String refreshToken,String accessToekn) {
 		this.id = id;
 		this.nickname = nickname;
 		this.email = email;
 		this.argrange = argrange;
+		this.snsid  = snsid;
+		this.sysid  = sysid;
+		this.agegrop  = agegrop;
+		this.refreshToken  = refreshToken;
+		this.accessToekn  = accessToekn;
+
 	}
 
 	public UserDto(User user) {
@@ -27,5 +38,13 @@ public class UserDto {
 		this.nickname = user.getNickname();
 		this.email = user.getEmail();
 		this.argrange = user.getArgrange();
+		this.snsid = user.getArgrange();
+		this.sysid = user.getSysid();
+		this.agegrop = user.getAgegrop();
+		this.refreshToken = user.getRefreshToken();
+		this.accessToekn = user.getAccessToekn();
+
+
+	
 	}
 }

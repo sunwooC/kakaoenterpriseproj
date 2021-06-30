@@ -1,5 +1,6 @@
 package com.kakaoenterprise.domain.user;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -19,12 +20,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User {
+@Builder
+public class User implements Serializable{
 	@Id // Primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; // 시퀀스, auto_increment
@@ -39,9 +40,9 @@ public class User {
 	private String email;
 
 	@Column(nullable = false, length = 100)
-	private String nickname;
+	private String nickname; //사용자가 변경가능한 부분
 
-	@Column(nullable = true, length = 100)
+	@Column(nullable = true)
 	private Long snsid; //
 
 	@Column(nullable = true, length = 100)
@@ -53,11 +54,32 @@ public class User {
 	@Column(nullable = true, length = 6)
 	private String argrange; //
 
+	@Column(nullable = true)
+	private Integer agegrop; //
+	
+	@Column(nullable = true, length = 60)
+	private String refreshToken; //
+	
+	@Column(nullable = true, length = 60)
+	private String accessToekn; //
+
+
+	
 	@CreationTimestamp
 	private Timestamp createDate;
 
 	public UserDto convertToAccountResDto() {
-		return UserDto.builder().nickname(this.nickname).email(this.email).id(this.id).argrange(this.argrange).build();
+		return UserDto.builder()
+				.nickname(this.nickname)
+				.email(this.email)
+				.id(this.id)
+				.argrange(this.argrange)
+				.agegrop(agegrop)
+				.refreshToken(refreshToken)
+				.accessToekn(accessToekn)
+				.sysid(sysid)
+				.build();
 	}
+
 
 }
