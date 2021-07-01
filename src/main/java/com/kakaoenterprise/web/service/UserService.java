@@ -9,13 +9,20 @@ import com.kakaoenterprise.web.dto.UserUpdateReqDto;
 
 public interface UserService {
 
-	Page<UserDto> findAll(Pageable pageable);
+	public Page<UserDto> findAll(Pageable pageable);
 
-	void update(UserUpdateReqDto account);
+	public Page<UserDto> findbyAgerange(String Argrang, Pageable pageable);
 
-	void deleteById(Long id);
+	public Page<UserDto> findByEmailEndingWith(String daomin, Pageable pageable);
 
-	void deleteBySnsid(Long id);
+	public Page<UserDto> findByEmailEndingWithAndAgerange(String argrang, String daomin, Pageable pageable);
 
-	User findById(Long id);
+	public void update(UserUpdateReqDto account);
+
+	public void deleteById(Long id);
+
+	public void deleteBySnsid(Long id);
+
+	public User findById(Long id);
+
 }

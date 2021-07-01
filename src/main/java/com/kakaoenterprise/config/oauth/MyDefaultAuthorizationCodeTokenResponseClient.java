@@ -2,7 +2,8 @@ package com.kakaoenterprise.config.oauth;
 
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.RequestEntity;
@@ -58,7 +59,7 @@ public final class MyDefaultAuthorizationCodeTokenResponseClient
 		restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
 		this.restOperations = restTemplate;
 	}
-	public static HashMap<String,String> map = new HashMap();
+	public static Map<String,String> map = new ConcurrentHashMap();
 
 	@Override
 	public OAuth2AccessTokenResponse getTokenResponse(

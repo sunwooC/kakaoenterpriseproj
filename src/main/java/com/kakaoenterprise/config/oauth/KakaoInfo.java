@@ -65,8 +65,8 @@ public class KakaoInfo extends OAuth2UserInfo {
 	}
 
 	@Override
-	public String getArgrange() {
-		Map<String, Object> temp = (Map) attributes.get("properties");
+	public String getAgerange() {
+		Map<String, Object> temp = (Map) attributes.get("kakao_account");
 		return (String) temp.get("age_range");
 	}
 

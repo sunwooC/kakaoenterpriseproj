@@ -26,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 public class User implements Serializable{
+	static final long serialVersionUID = 4136285672735957787L;
 	@Id // Primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; // 시퀀스, auto_increment
@@ -52,7 +53,7 @@ public class User implements Serializable{
 	private RoleType role; // ADMIN, USER
 
 	@Column(nullable = true, length = 6)
-	private String argrange; //
+	private String agerange; //
 
 	@Column(nullable = true)
 	private Integer agegrop; //
@@ -73,7 +74,7 @@ public class User implements Serializable{
 				.nickname(this.nickname)
 				.email(this.email)
 				.id(this.id)
-				.argrange(this.argrange)
+				.agerange(this.agerange)
 				.agegrop(agegrop)
 				.refreshToken(refreshToken)
 				.accessToekn(accessToekn)

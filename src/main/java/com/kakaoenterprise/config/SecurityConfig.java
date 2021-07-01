@@ -27,10 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableOAuth2Client
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+/*
 	@Autowired
 	OAuth2ClientContext oauth2ClientContext;
-
+*/
 	private final OAuth2DetailsService oAuth2DetailsService;
 
 	@Bean

@@ -33,6 +33,24 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public Page<UserDto> findbyAgerange(String agerang, Pageable pageable) {
+		Page<User> users = userRepository.findByAgerange(agerang, pageable);
+		return users.map(UserDto::new);
+	}
+
+	@Override
+	public Page<UserDto> findByEmailEndingWith(String daomin, Pageable pageable) {
+		Page<User> users = userRepository.findByEmailEndingWith(daomin, pageable);
+		return users.map(UserDto::new);
+	}
+
+	@Override
+	public Page<UserDto> findByEmailEndingWithAndAgerange(String agerang, String daomin, Pageable pageable) {
+		Page<User> users = userRepository.findByEmailEndingWithAndAgerange(daomin, agerang, pageable);
+		return users.map(UserDto::new);
+	}
+
+	@Override
 	public User findById(Long id) {
 		Optional<User> user = userRepository.findById(id);
 		return user.orElse(null);

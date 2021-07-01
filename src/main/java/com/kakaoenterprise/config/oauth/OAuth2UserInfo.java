@@ -21,7 +21,7 @@ public abstract class OAuth2UserInfo {
 	public abstract String getRefreshToken();
 	public abstract String getAccessToekn();
 	public abstract String getSysid();
-	public abstract String getArgrange();
+	public abstract String getAgerange();
 	
 }
 
