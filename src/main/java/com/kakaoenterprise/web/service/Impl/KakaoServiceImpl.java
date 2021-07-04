@@ -14,8 +14,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
-import com.kakaoenterprise.KakaoAuthToken;
 import com.kakaoenterprise.config.RestConfig;
+import com.kakaoenterprise.config.oauth.KakaoAuthToken;
 import com.kakaoenterprise.config.oauth.KakaoInfo;
 import org.springframework.util.LinkedMultiValueMap;
 

@@ -20,7 +20,7 @@ public class MvcConfiguration implements WebMvcConfigurer  {
 		
 		registry.addInterceptor(loggingInterceptor)
 		//registry.addInterceptor(new LoggerInterceptor())
-		.excludePathPatterns("/css/**", "/fonts/**", "/plugin/**", "/scripts/**");
+		.excludePathPatterns("/css/**", "/js/**","/","/user/userlist");
 		
 	}
 }

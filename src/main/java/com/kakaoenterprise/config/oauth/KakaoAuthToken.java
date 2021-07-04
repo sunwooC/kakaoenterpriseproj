@@ -1,4 +1,4 @@
-package com.kakaoenterprise;
+package com.kakaoenterprise.config.oauth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

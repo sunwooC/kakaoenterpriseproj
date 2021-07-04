@@ -14,8 +14,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
-import com.kakaoenterprise.KakaoAuthToken;
 import com.kakaoenterprise.config.RestConfig;
+import com.kakaoenterprise.config.oauth.KakaoAuthToken;
 
 @Controller
 public class KakaoLoginOutController {

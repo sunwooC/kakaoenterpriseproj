@@ -20,7 +20,6 @@ public class PrincipalDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println("/login 이 호출 되면 자동 실행되어 username이 DB에 있는지 확인한다.");
 		User principal = UserRepository.findByUsername(username);
 
 		if (principal == null) {

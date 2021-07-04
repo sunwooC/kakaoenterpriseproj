@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kakaoenterprise.KakaoAuthToken;
 import com.kakaoenterprise.common.ApiException;
 import com.kakaoenterprise.common.ExceptionEnum;
 import com.kakaoenterprise.config.auth.PrincipalDetails;
+import com.kakaoenterprise.config.oauth.KakaoAuthToken;
 import com.kakaoenterprise.config.oauth.KakaoInfo;
 import com.kakaoenterprise.domain.user.User;
 import com.kakaoenterprise.web.dto.KaKaoUserInfo;
