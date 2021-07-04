@@ -63,7 +63,7 @@ i {
 					v-model="domain" /> </md-field>
 				<div>
 					<button v-on:click="getData(0)">조회</button>
-					<button v-on:click="logOut()">로그아웃</button>
+					<button v-on:click="logOut()">로그아웃(로그인한 본인)</button>
 				</div>
 			</div>
 
@@ -78,6 +78,7 @@ i {
 						<div class="md-layout-item md-size-10 text-info">수정(닉)</div>
 						<div class="md-layout-item md-size-10 text-info">토큰갱신</div>
 						<div class="md-layout-item md-size-5 text-info">연결끊기</div>
+						<div class="md-layout-item md-size-5 text-info">로그아웃</div>
 						<div class="md-layout-item md-size-5 text-info">삭제</div>
 					</div>
 
@@ -91,17 +92,20 @@ i {
 							listItem.sysid }}</div>
 
 						<div class="md-layout-item md-size-15 text-info">
-							<i class="fas fa-edit" @click="onEdit(index)"></i>
+							<i class="fas fa-glasses" @click="onReqUserInfo(index)"></i>
 						</div>
 
 						<div class="md-layout-item md-size-10 text-info">
 							<i class="fas fa-edit" @click="onEdit(index)"></i>
 						</div>
 						<div class="md-layout-item md-size-10 text-info">
-							<i class="fal fa-sync" @click="onReaccessToekn(index)"></i> <!-- 토큰갱신 -->
+							<i class="fal fa-redo-alt" @click="onReaccessToekn(index)"></i> <!-- 토큰갱신 -->
 						</div>
 						<div class="md-layout-item md-size-5 text-info">
-							<i class="fas fa-trash-alt" @click="onRemove(index)"></i>
+							<i class="fad fa-cut" @click="onUnLink(index)"></i><!-- 연결끊기 -->
+						</div>
+						<div class="md-layout-item md-size-5 text-info">
+							<i class="fad fa-cut" @click="onUserLogout(index)"></i><!-- 연결끊기 -->
 						</div>
 						<div class="md-layout-item md-size-5 text-info">
 							<i class="fas fa-trash-alt" @click="onRemove(index)"></i>
@@ -278,27 +282,6 @@ i {
 						alert("변경에 실패하였습니다.");
             		});
                 },
-                onReaccessToekn(index){
-                	if( this.selectedData.sysid !== 'kakao'){
-                		alert("kakao가이자만 가능합니다.");
-                		return ;
-                	}
-                    const getdData = {
-                            id: this.selectedData.id,
-                        }
-                        console.log(getdData);
-        				axios.post('/api/v1/access-toekns/'+this.selectedData.id,getdData)
-    					.then(res => {
-    						console.log(res);
-    	                    this.listData.splice(this.curSelecdtIndex, 1, editedData);
-    	                    this.closeDialog();
-    						}
-    					)
-                		.catch(error => {
-    						alert("변경에 실패하였습니다.");
-                		});                	
-                	
-                },
                 removeData() {
                     //데이터 삭제: splice(해당 index, 갯수)
     				axios.delete('/api/v1/user/'+this.selectedData.id)
@@ -317,16 +300,88 @@ i {
                 onAdd() {
                     this.addDialog = true;
                 },
+                onReqUserInfo(index){
+                    this.curSelecdtIndex = index;
+                    
+                    this.selectedData.id = this.listData[this.curSelecdtIndex].id;
+                    this.selectedData.sysid = this.listData[this.curSelecdtIndex].sysid;
+                    
+                	if( this.selectedData.sysid !== 'Kakao'){
+                		alert("kakao가입자만 가능합니다.");
+                		return ;
+                	}                    
+    				axios.get('/api/v2/user/me/'+this.selectedData.id)
+					.then(res => {
+						console.log(res.data);
+						alert(res);
+						}
+					).catch(error => {
+						console.log(error);
+						alert("실패:"+error);
+            		});
+                },
+                onReaccessToekn(index){
+                	this.curSelecdtIndex = index;
+                    this.selectedData.id = this.listData[this.curSelecdtIndex].id;
+                    this.selectedData.sysid = this.listData[this.curSelecdtIndex].sysid;
+                	if( this.selectedData.sysid !== 'Kakao'){
+                		alert("kakao가입자만 가능합니다.");
+                		return ;
+                	}
+       				axios.post('/api/v2/user/token/'+this.selectedData.id)
+   					.then(res => {
+   						console.log(res);
+   						alert("갱신된 토큰 : "+res.data.access_token);
+   						}
+   					)
+               		.catch(error => {
+               			alert("실패:"+error.response.data.message);
+               		});                	
+                },      
+                onUnLink(index){
+                	this.curSelecdtIndex = index;
+                    this.selectedData.id = this.listData[this.curSelecdtIndex].id;
+                    this.selectedData.sysid = this.listData[this.curSelecdtIndex].sysid;
+                	if( this.selectedData.sysid !== 'Kakao'){
+                		alert("kakao가입자만 가능합니다.");
+                		return ;
+                	}
+       				axios.delete('/api/v1/user/unlink/'+this.selectedData.id)
+   					.then(res => {
+   						console.log(res);
+   						alert("unlink 사용자 : "+res.data);
+   						}
+   					)
+               		.catch(error => {
+               			alert("실패:"+error.response.data.message);
+               		});                	
+                },                  
+                onUserLogout(index){
+                	this.curSelecdtIndex = index;
+                    this.selectedData.id = this.listData[this.curSelecdtIndex].id;
+                    this.selectedData.sysid = this.listData[this.curSelecdtIndex].sysid;
+                	if( this.selectedData.sysid !== 'Kakao'){
+                		alert("kakao가입자만 가능합니다.");
+                		return ;
+                	}
+       				axios.post('/api/v1/user/logout/'+this.selectedData.id)
+   					.then(res => {
+   						console.log(res);
+   						alert("logout 사용자 : "+res.data);
+   						}
+   					)
+               		.catch(error => {
+               			alert("실패:"+error.response.data.message);
+               		});                	
+                },                  
 
                 onEdit(index) {
                     this.editDialog = true;
-
                     this.curSelecdtIndex = index;
                     this.selectedData.id = this.listData[this.curSelecdtIndex].id;
                     this.selectedData.nickname = this.listData[this.curSelecdtIndex].nickname;
                     this.selectedData.email = this.listData[this.curSelecdtIndex].email;
                 },
-
                 onRemove(index) {
                     this.removeDialog = true;
                     //현재 index번호를 보내주어야, removeDialog창에서 confirm 클릭후
@@ -335,10 +390,23 @@ i {
                     this.selectedData.id = this.listData[this.curSelecdtIndex].id;
                     this.selectedData.nickname = this.listData[this.curSelecdtIndex].nickname;
                     this.selectedData.email = this.listData[this.curSelecdtIndex].email;
-                    
                 },
                 logOut(){
-                	
+                	this.curSelecdtIndex = index;
+                    this.selectedData.id = this.listData[this.curSelecdtIndex].id;
+                    this.selectedData.sysid = this.listData[this.curSelecdtIndex].sysid;
+                	if( this.selectedData.sysid !== 'Kakao'){
+                		alert("kakao가입자만 가능합니다.");
+                		return ;
+                	}
+       				axios.post('/api/v2/user/token/111')
+   					.then(res => {
+   						console.log(res);
+   						}
+   					)
+               		.catch(error => {
+   						alert("실패");
+               		});     
                 },
                 closeDialog() {
                     this.addDialog = false;

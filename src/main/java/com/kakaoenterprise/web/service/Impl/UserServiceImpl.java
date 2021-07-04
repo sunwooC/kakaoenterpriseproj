@@ -21,11 +21,13 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	/*
-	 * @Override public User findByUsername(String username) { // TODO
-	 * Auto-generated method stub return null; }
-	 */
 
+	
+    /**
+     * 카카오 사용자 정보 조회(Admin Key로)하는 기능
+     * @param snsid 조회하고자 하는 사용자의 카카오번호
+     * @return 응답내용 반환
+     */
 	@Override
 	public Page<UserDto> findAll(Pageable pageable) {
 		Page<User> users = userRepository.findAll(pageable);
@@ -70,5 +72,9 @@ public class UserServiceImpl implements UserService {
 	public void deleteById(Long id) {
 		userRepository.deleteById(id);
 	}
+	public void Save(User user) {
+		userRepository.save(user);
+	}
+	
 
 }

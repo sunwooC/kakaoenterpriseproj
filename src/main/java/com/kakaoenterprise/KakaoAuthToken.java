@@ -13,4 +13,5 @@ public class KakaoAuthToken {
 	long expires_in;
 	String refresh_token;
 	long refresh_token_expires_in;
+	
 }

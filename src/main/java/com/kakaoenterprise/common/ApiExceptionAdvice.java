@@ -18,7 +18,7 @@ public class ApiExceptionAdvice {
                 .status(e.getError().getStatus())
                 .body(ApiExceptionEntity.builder()
                         .errorCode(e.getError().getCode())
-                        .errorMessage(e.getError().getMessage())
+                        .message(e.getError().getMessage())
                         .build());
     }
 
@@ -29,7 +29,7 @@ public class ApiExceptionAdvice {
                 .status(ExceptionEnum.RUNTIME_EXCEPTION.getStatus())
                 .body(ApiExceptionEntity.builder()
                         .errorCode(ExceptionEnum.RUNTIME_EXCEPTION.getCode())
-                        .errorMessage(e.getMessage())
+                        .message(e.getMessage())
                         .build());
     }
 
@@ -40,7 +40,7 @@ public class ApiExceptionAdvice {
                 .status(ExceptionEnum.ACCESS_DENIED_EXCEPTION.getStatus())
                 .body(ApiExceptionEntity.builder()
                         .errorCode(ExceptionEnum.ACCESS_DENIED_EXCEPTION.getCode())
-                        .errorMessage(e.getMessage())
+                        .message(e.getMessage())
                         .build());
     }
 
@@ -51,7 +51,7 @@ public class ApiExceptionAdvice {
                 .status(ExceptionEnum.INTERNAL_SERVER_ERROR.getStatus())
                 .body(ApiExceptionEntity.builder()
                         .errorCode(ExceptionEnum.INTERNAL_SERVER_ERROR.getCode())
-                        .errorMessage(e.getMessage())
+                        .message(e.getMessage())
                         .build());
     }
 }

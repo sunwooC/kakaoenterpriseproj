@@ -2,6 +2,7 @@ package com.kakaoenterprise.web.controll;
 
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 
 import com.kakaoenterprise.KakaoAuthToken;
+import com.kakaoenterprise.config.RestConfig;
 
 @Controller
 public class KakaoLoginOutController {
+	
 	/*
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
 	private String clientId;
@@ -35,6 +38,9 @@ public class KakaoLoginOutController {
 	private String userLogoutUri;
 	@Value("${kakao.userUnlinkUri}")
 	private String userUnlinkUri;
+	@Autowired
+	private RestConfig restConfig;
+
 
 	@GetMapping("/login/oauth2/code/kakao")
 	public String callback(String code, String error) {
@@ -45,7 +51,7 @@ public class KakaoLoginOutController {
 	}
 
 	public void postOauthToken(String code) {
-		RestTemplate rt = new RestTemplate();
+		RestTemplate rt = restConfig.restTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -60,7 +66,7 @@ public class KakaoLoginOutController {
 	}
 
 	public void postUserMe(KakaoAuthToken token) {
-		RestTemplate rt = new RestTemplate();
+		RestTemplate rt = restConfig.restTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", contentType);
 		headers.add("Authorization", "Bearer " + token.getAccess_token());
@@ -72,7 +78,7 @@ public class KakaoLoginOutController {
 
 	@GetMapping("/logout")
 	public void logout(String token) {
-		RestTemplate rt = new RestTemplate();
+		RestTemplate rt = restConfig.restTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + token);
 		HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(headers);
@@ -82,7 +88,7 @@ public class KakaoLoginOutController {
 
 	@GetMapping("/unlink")
 	public void unlink(String token) {
-		RestTemplate rt = new RestTemplate();
+		RestTemplate rt = restConfig.restTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + token);
 		HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(headers);
@@ -92,7 +98,7 @@ public class KakaoLoginOutController {
 
 	@GetMapping("/refresh-token")
 	public void repp(String refresh_token) {
-		RestTemplate rt = new RestTemplate();
+		RestTemplate rt = restConfig.restTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", contentType);
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -102,5 +108,6 @@ public class KakaoLoginOutController {
 		ResponseEntity<KakaoAuthToken> response = rt.exchange(tokenUri, HttpMethod.POST, req, KakaoAuthToken.class);
 	}
 	*/
+
 
 }

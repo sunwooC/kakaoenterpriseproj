@@ -9,11 +9,11 @@ import org.springframework.http.HttpStatus;
 @ToString
 public class ApiExceptionEntity {
     private String errorCode;
-    private String errorMessage;
+    private String message;
 
     @Builder
-    public ApiExceptionEntity(HttpStatus status, String errorCode, String errorMessage){
+    public ApiExceptionEntity(HttpStatus status, String errorCode, String message){
         this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+        this.message = message;
     }
 }
