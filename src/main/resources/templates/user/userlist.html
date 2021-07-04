@@ -271,10 +271,11 @@ i {
                         email: this.selectedData.email,
                     }
                     console.log(editedData);
-    				axios.post('/user/'+this.selectedData.id,editedData)
+    				axios.post('/api/v1/user/'+this.selectedData.id,editedData)
 					.then(res => {
 						console.log(res);
 	                    this.listData.splice(this.curSelecdtIndex, 1, editedData);
+	                    alert("변경에 되었습니다.");
 	                    this.closeDialog();
 						}
 					)

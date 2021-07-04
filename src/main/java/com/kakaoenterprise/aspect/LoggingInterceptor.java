@@ -18,21 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class LoggingInterceptor extends HandlerInterceptorAdapter {
 
-    private final ObjectMapper objectMapper;
+	private final ObjectMapper objectMapper;
 
-    @Override
-    public void afterCompletion(
-            HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
-            throws Exception {
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+			throws Exception {
+		if (request.getClass().getName().contains("SecurityContextHolderAwareRequestWrapper")) {
+			return;
+		}
+		final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+		final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
+		log.info("Request Body : {}", objectMapper.readTree(cachingRequest.getContentAsByteArray()));
+		log.info("Response Body : {}", objectMapper.readTree(cachingResponse.getContentAsByteArray()));
 
-        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
-        final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
-
-        log.info(
-                "ReqBody : {} / ResBody : {}",
-                objectMapper.readTree(cachingRequest.getContentAsByteArray()),
-                objectMapper.readTree(cachingResponse.getContentAsByteArray())
-        );
-
-    }
+	}
 }

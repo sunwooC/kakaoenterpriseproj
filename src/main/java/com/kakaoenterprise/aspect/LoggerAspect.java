@@ -7,9 +7,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,6 @@ public class LoggerAspect {
 	@Pointcut("execution(* com.kakaoenterprise..*Controller.*(..))") // 이런 패턴이 실행될 경우 수행
 	public void loggerPointCut() {
 	}
-
 	@Around("loggerPointCut()")
 	public Object methodLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		try {

@@ -1,29 +1,40 @@
 package com.kakaoenterprise.aspect;
 
+import java.io.BufferedReader;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.kakaoenterprise.config.RestTemplateLoggingInterceptor;
+
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 public class LoggerInterceptor extends HandlerInterceptorAdapter {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		logger.debug("===============================================");
-		logger.debug("==================== BEGIN ====================");
-		logger.debug("Request URI ===> " + request.getRequestURI());
+		log.info("");
+		ReadableRequestBodyWrapper wrapper = new ReadableRequestBodyWrapper((HttpServletRequest) request);
+		log.info(wrapper.getRequestBody());
+		
 		return super.preHandle(request, response, handler);
 	}
 
+
+
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		logger.debug("==================== END ======================");
-		logger.debug("===============================================");
+		log.info("==================== END ======================");
+		log.info("===============================================");
 	}
+	
+	
 
 }
